@@ -3,10 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>شحن شدات ببجي وفري فاير</title>
-
-<meta name="description" content="شحن شدات ببجي وفري فاير بسرعة - دفع فودافون كاش - تسليم فوري">
+<title>شحن الألعاب</title>
 
 <style>
 body{
@@ -19,16 +16,11 @@ margin:0;
 .container{
 background:#fff;
 width:90%;
-max-width:400px;
+max-width:420px;
 margin:20px auto;
 padding:15px;
 border-radius:15px;
 box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
-
-img{
-border-radius:15px;
-margin-bottom:10px;
 }
 
 input,select,button{
@@ -40,22 +32,11 @@ border:1px solid #ccc;
 }
 
 button{
-background:#25D366;
+background:#28a745;
 color:#fff;
 border:none;
-font-size:16px;
 cursor:pointer;
-}
-
-.prices{
-background:#eee;
-padding:10px;
-border-radius:10px;
-margin:10px 0;
-}
-
-.contact{
-margin-top:10px;
+font-size:16px;
 font-weight:bold;
 }
 </style>
@@ -65,89 +46,63 @@ font-weight:bold;
 
 <div class="container">
 
-<h2>🎮 شحن الألعاب</h2>
+<h2>شحن الألعاب</h2>
 
-<!-- 🔥 الصورة الجديدة برابط مباشر -->
-<img src="https://i.imgur.com/QyQZ6Gf.png" width="100%">
-
-<p>✔️ شحن فوري خلال دقائق</p>
-<p>✔️ دعم واتساب مباشر</p>
-<p>✔️ موثوق 100%</p>
-
-<div class="prices">
-<p>30 جنيه = 100 Diamonds</p>
-<p>35 جنيه = 60 UC</p>
-</div>
-
-<select id="game">
-<option>اختر اللعبة</option>
-<option>ببجي</option>
-<option>فري فاير</option>
-</select>
-
-<input type="text" id="id" placeholder="ID اللاعب">
+<input type="text" id="playerId" placeholder="اكتب ID اللاعب">
 
 <select id="package">
-<option>اختر الباقة</option>
-<option value="100 Diamonds - 30 جنيه">100 Diamonds - 30 جنيه</option>
-<option value="60 UC - 35 جنيه">60 UC - 35 جنيه</option>
+<option value="0">اختر الباقة</option>
+
+<option value="30">60 شدة - 30 جنيه</option>
+<option value="100">325 شدة - 100 جنيه</option>
+<option value="200">660 شدة - 200 جنيه</option>
+
+<option value="30">110 جوهرة - 30 جنيه</option>
+<option value="150">530 جوهرة - 150 جنيه</option>
+<option value="300">1000 جوهرة - 300 جنيه</option>
+
 </select>
 
-<input type="number" id="amount" placeholder="عدد الجواهر">
+<button onclick="sendOrder()">اطلب الآن</button>
 
-<input type="text" id="last4" placeholder="آخر 4 أرقام من التحويل">
-
-<button onclick="sendOrder()">اطلب الآن 🔥</button>
-
-<div class="contact">
-💳 فودافون كاش: 01116816773 <br>
-📞 واتساب: 01116816773
-</div>
+<p>تحويل فودافون كاش: <b>01116816773</b></p>
 
 </div>
 
 <script>
+function sendOrder(){
+let id = document.getElementById("playerId").value;
+let pack = document.getElementById("package");
 
-// 💰 الأرباح
-let totalProfit = Number(localStorage.getItem("profit") || 0);
-
-// إضافة ربح
-function addProfit(price, cost){
-let profit = price - cost;
-totalProfit += profit;
-localStorage.setItem("profit", totalProfit);
+if(id === "" || pack.value == 0){
+alert("اكتب البيانات");
+return;
 }
 
-// 📦 إرسال الطلب
-function sendOrder(){
-
-let game=document.getElementById("game").value;
-let id=document.getElementById("id").value;
-let pack=document.getElementById("package").value;
-let amount=document.getElementById("amount").value;
-let last4=document.getElementById("last4").value;
-
-let order={
-game:game,
-id:id,
-package:pack,
-amount:amount,
-last4:last4,
-date:new Date().toLocaleString()
+let order = {
+id: id,
+item: pack.options[pack.selectedIndex].text,
+price: pack.value,
+time: new Date().toLocaleString()
 };
 
-// حفظ الطلب
-let orders=JSON.parse(localStorage.getItem("orders")||"[]");
+// تخزين الطلب
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
 orders.push(order);
-localStorage.setItem("orders",JSON.stringify(orders));
+localStorage.setItem("orders", JSON.stringify(orders));
 
-// حساب الربح
-addProfit(35, 25);
+// واتساب
+let msg =
+"طلب جديد%0A" +
+"ID: " + id + "%0A" +
+"المنتج: " + order.item + "%0A" +
+"السعر: " + order.price;
 
-// رسالة واتساب
-let msg=
-`🎮 طلب شحن:
-اللعبة: ${game}
-ID: ${id}
-الباقة: ${pack}
-العدد: ${amount
+window.open("https://wa.me/201116816773?text=" + msg, "_blank");
+
+alert("تم إرسال الطلب بنجاح");
+}
+</script>
+
+</body>
+</html>
