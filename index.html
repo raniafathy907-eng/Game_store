@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-<meta name="google-site-verification" content="XXXXXXX" />
 <meta charset="UTF-8">
-<title>موقع شحن الألعاب</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>شحن شدات ببجي وفري فاير</title>
+
+<meta name="description" content="شحن شدات ببجي وفري فاير بسرعة - دفع فودافون كاش - تسليم فوري">
 
 <style>
 body{
 font-family:tahoma;
 background:#f5f5f5;
 text-align:center;
+margin:0;
 }
 
 .container{
@@ -18,19 +22,28 @@ width:90%;
 max-width:400px;
 margin:20px auto;
 padding:15px;
-border-radius:10px;
+border-radius:15px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+img{
+border-radius:15px;
+margin-bottom:10px;
 }
 
 input,select,button{
 width:90%;
 padding:10px;
 margin:8px 0;
+border-radius:8px;
+border:1px solid #ccc;
 }
 
 button{
 background:#25D366;
 color:#fff;
 border:none;
+font-size:16px;
 cursor:pointer;
 }
 
@@ -44,7 +57,6 @@ margin:10px 0;
 .contact{
 margin-top:10px;
 font-weight:bold;
-color:#333;
 }
 </style>
 </head>
@@ -55,17 +67,22 @@ color:#333;
 
 <h2>🎮 شحن الألعاب</h2>
 
-<!-- 💰 الأسعار -->
+<!-- 🔥 الصورة الجديدة برابط مباشر -->
+<img src="https://i.imgur.com/QyQZ6Gf.png" width="100%">
+
+<p>✔️ شحن فوري خلال دقائق</p>
+<p>✔️ دعم واتساب مباشر</p>
+<p>✔️ موثوق 100%</p>
+
 <div class="prices">
-<h3>💰 الأسعار</h3>
-<p>30 جنيه = 100 Diamonds (فري فاير)</p>
-<p>35 جنيه = 60 UC (ببجي)</p>
+<p>30 جنيه = 100 Diamonds</p>
+<p>35 جنيه = 60 UC</p>
 </div>
 
 <select id="game">
 <option>اختر اللعبة</option>
-<option value="ببجي">شدات ببجي</option>
-<option value="فري فاير">فري فاير</option>
+<option>ببجي</option>
+<option>فري فاير</option>
 </select>
 
 <input type="text" id="id" placeholder="ID اللاعب">
@@ -80,10 +97,10 @@ color:#333;
 
 <input type="text" id="last4" placeholder="آخر 4 أرقام من التحويل">
 
-<button onclick="sendOrder()">إرسال الطلب واتساب</button>
+<button onclick="sendOrder()">اطلب الآن 🔥</button>
 
 <div class="contact">
-💳 التحويل على فودافون كاش: 01116816773 <br>
+💳 فودافون كاش: 01116816773 <br>
 📞 واتساب: 01116816773
 </div>
 
@@ -91,6 +108,17 @@ color:#333;
 
 <script>
 
+// 💰 الأرباح
+let totalProfit = Number(localStorage.getItem("profit") || 0);
+
+// إضافة ربح
+function addProfit(price, cost){
+let profit = price - cost;
+totalProfit += profit;
+localStorage.setItem("profit", totalProfit);
+}
+
+// 📦 إرسال الطلب
 function sendOrder(){
 
 let game=document.getElementById("game").value;
@@ -99,22 +127,27 @@ let pack=document.getElementById("package").value;
 let amount=document.getElementById("amount").value;
 let last4=document.getElementById("last4").value;
 
+let order={
+game:game,
+id:id,
+package:pack,
+amount:amount,
+last4:last4,
+date:new Date().toLocaleString()
+};
+
+// حفظ الطلب
+let orders=JSON.parse(localStorage.getItem("orders")||"[]");
+orders.push(order);
+localStorage.setItem("orders",JSON.stringify(orders));
+
+// حساب الربح
+addProfit(35, 25);
+
+// رسالة واتساب
 let msg=
-`🎮 طلب شحن:%0A
-اللعبة: ${game}%0A
-ID: ${id}%0A
-الباقة: ${pack}%0A
-العدد: ${amount}%0A
-آخر 4 أرقام: ${last4}`;
-
-let phone="201116816773";
-
-window.open(`https://wa.me/${phone}?text=${msg}`,"_blank");
-
-alert("تم إرسال الطلب ✔️");
-}
-
-</script>
-
-</body>
-  </html>
+`🎮 طلب شحن:
+اللعبة: ${game}
+ID: ${id}
+الباقة: ${pack}
+العدد: ${amount
